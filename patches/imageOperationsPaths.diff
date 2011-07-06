@@ -1,0 +1,17 @@
+Index: imageOperations.pro
+===================================================================
+--- imageOperations.pro	(revision 45690)
++++ imageOperations.pro	(working copy)
+@@ -12,10 +12,10 @@
+ CONFIG += link_pkgconfig
+ PKGCONFIG += opencv
+ 
+-LIBS += -L../../coreDataStructs/lib \
++LIBS += -L../coreDataStructs \
+ 	-lcoreDataStructs
+ 	
+-INCLUDEPATH += ../../coreDataStructs/lib
++INCLUDEPATH += ../coreDataStructs
+ 
+ HEADERS += imageOperations.h \
+ 	OpenCVAdapter.h \

@@ -1,0 +1,157 @@
+Index: CMakeLists.txt
+===================================================================
+--- CMakeLists.txt	(revision 45690)
++++ CMakeLists.txt	(working copy)
+@@ -1,130 +1,32 @@
++cmake_minimum_required(VERSION 2.8)
+ project(baselib)
+ 
+-cmake_minimum_required(VERSION 2.4.0)
+ find_package(Qt4 REQUIRED)
+-set(QT_USE_QTOPENGL FALSE)
+-set(QT_USE_QTMAIN FALSE)
++#set(QT_USE_QTOPENGL FALSE)
++#set(QT_USE_QTMAIN FALSE)
+ set(QT_USE_QTCORE TRUE)
+-include(${QT_USE_FILE})
+- 
+-set( baselib_SRCS
+-#
+-Image/ColorConversion.cpp
+-Image/ImageWriter.cpp
+-Image/ImageWriter_Qt.cpp
+-DataLog/DataLogModule.cpp
+-DataLog/DataLogStatusM.cpp
+-DataLog/DataLogControlM.cpp
+-Math/EigenDecomposition.cpp
+-ExceptionHandler/ExceptionHandler.cpp
+-Config/Config.cpp
+-Core/ShutdownMessage.cpp
+-Core/Module.cpp
+-Core/Profiler/ProfilerEntry.cpp
+-Core/Profiler/Timer.cpp
+-Core/Profiler/Profiler.cpp
+-Core/Dispatcher.cpp
+-Core/ProfileReportM.cpp
+-Core/ProfilerModule.cpp
+-Core/Message.cpp
+-String/String.cpp
+-Serialization/FastIO.cpp
+-Serialization/Serialization.cpp
+-Logging/LogDestination_Html.cpp
+-Logging/LogDestination_Console.cpp
+-Logging/Log.cpp
+-Memory/StackMemoryMan.cpp
+-Debug/DebugDrawM.cpp
+-Threading/Condition.cpp
+-Threading/Thread.cpp
+-Threading/Mutex.cpp
+-Threading/ThreadPoolThread.cpp
+-Threading/ThreadPool.cpp
+-baselib.cpp
+-Comm/Socket.cpp
+-Timing/Clock.cpp
+-./Pattern/Singleton_COFU.h                                         
+-./Pattern/Singleton.h                                              
+-./Image/ColorConversion.h                                          
+-./Image/Pixel.h                                                    
+-./Image/ImageWriter_Qt.h                                           
+-./Image/Pixel_inl.h                                                
+-./Image/SingleChannelImage.h                                       
+-./Image/ImageWriter.h                                              
+-./Image/SingleChannelImage_inl.h                                   
+-./DataLog/DataLogStatusM.h                                         
+-./DataLog/DataLogControlM.h                                        
+-./DataLog/DataLogModule.h                                          
+-./Math/Mat.h                                                       
+-./Math/Quat.h                                                      
+-./Math/Quat_inl.h                                                  
+-./Math/Vec3_inl.h                                                  
+-./Math/Vec.h                                                       
+-./Math/Vec2_inl.h                                                  
+-./Math/Vec_inl.h                                                   
+-./Math/Vec2.h                                                      
+-./Math/Mat_inl.h                                                   
+-./Math/Vec3.h                                                      
+-./Math/EigenDecomposition.h                                        
+-./ExceptionHandler/ExceptionHandler.h                              
+-./Config/Config.h                                                  
+-./Config/Config_inl.h                                              
+-./Core/Module.h                                                    
+-./Core/Message.h                                                   
+-./Core/Dispatcher.h                                                
+-./Core/ProfilerModule.h                                            
+-./Core/Profiler/Timer.h                                            
+-./Core/Profiler/Profiler.h                                         
+-./Core/Profiler/ProfilerEntry.h                                    
+-./Core/Message_inl.h                                               
+-./Core/ProfileReportM.h                                            
+-./Core/ShutdownMessage.h                                           
+-./String/String.h                                                  
+-./Serialization/FastIO.h                                           
+-./Serialization/Serialization.h                                    
+-./Serialization/Serialization_inl.h
+-./Logging/LogDestination_Html.h
+-./Logging/Log.h
+-./Logging/LogDestination_Console.h
+-./baselib.h
+-./Geometry/Sphere_inl.h
+-./Geometry/AABB_inl.h
+-./Geometry/AABB.h
+-./Geometry/Line_inl.h
+-./Geometry/Line.h
+-./Geometry/Sphere.h
+-./Memory/PoolAllocator.h
+-./Memory/StackMemoryMan.h
+-./Debug/DbgImage.h
+-./Debug/DebugDrawM.h
+-./Debug/DbgObjectContainer_inl.h
+-./Debug/DbgObjectContainer.h
+-./Threading/SimpleThread.h
+-./Threading/Thread.h
+-./Threading/ThreadPoolThread.h
+-./Threading/ThreadQueue.h
+-./Threading/Condition.h
+-./Threading/ThreadPool.h
+-./Threading/ThreadPool_inl.h
+-./Threading/Mutex.h
+-./Threading/ThreadQueue_inl.h
+-./Threading/Atomic.h
+-./Comm/Socket.h
+-./Timing/Clock.h
+-./Timing/MacSpecific.h
+-./DoxyIndex.h
+-)
+ 
++#Optimization / Debug
++if(RELEASE)
++    set(CMAKE_CXX_FLAGS "-O3 -msse4 -mssse3") #Optimized
++else()
++    set(CMAKE_CXX_FLAGS "-O0 -g3") #Debug
++endif()
++
++include(${QT_USE_FILE}) 
++file(GLOB_RECURSE SOURCES ${CMAKE_SOURCE_DIR}/*.cpp)
++file(GLOB_RECURSE HEADERS ${CMAKE_SOURCE_DIR}/*.h)
++
+ include_directories (
++  ${CMAKE_SOURCE_DIR}
+ 	../external/tinyxml
++	../external/coreDataStructs
+ )
+ 
+-#LINK_DIRECTORIES(../external/tinyxml ../external/xsens ../baselib/ ../imagegrabber)
++add_library(baselib ${HEADERS} ${SOURCES})
++target_link_libraries(baselib ${QT_LIBRARIES} ../external/tinyxml/libtinyxml.a)
+ 
+-add_library(baselib ${baselib_SRCS})
+-target_link_libraries(baselib ${QT_LIBRARIES} tinyxml)
+-
+-
+-
+-
+-
++add_custom_target(remake
++	#clean and compile with 1 thread per core
++	COMMAND make clean && rm CMakeCache.txt && cmake ${CMAKE_SOURCE_DIR} -G\"Unix Makefiles\" && make -j`getconf _NPROCESSORS_ONLN`
++)

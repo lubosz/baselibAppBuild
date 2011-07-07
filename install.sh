@@ -22,7 +22,7 @@ cd ..
 
 svn co https://svn.uni-koblenz.de/agas/projects/IntegVelodyne/30_prog/external/imageOperations/lib imageOperations
 cd imageOperations
-patch -p0 < ../patches/imageOperationsPaths.diff
+patch -p0 < ../../patches/imageOperationsPaths.diff
 qmake
 make -j$GCC_THREADS
 cd ..
@@ -36,7 +36,7 @@ cd ..
 git clone git://github.com/mariusmuja/flann.git
 cd flann
 git checkout 94d28f2d2868709adac1c944472dda71f5b8c289
-cmake . -DBUILD_C_BINDINGS=0 -DLATEX_OUTPUT_PATH=.
+cmake . -DBUILD_MATLAB_BINDINGS=0 -DBUILD_PYTHON_BINDINGS=0 -DLATEX_OUTPUT_PATH=.
 make -j$GCC_THREADS
 cd ..
 

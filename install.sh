@@ -14,11 +14,12 @@ mkdir external
 cd external/
 
 svn co https://svn.uni-koblenz.de/agas/projects/IntegVelodyne/30_prog/external/coreDataStructs/lib coreDataStructs
-svn co https://svn.uni-koblenz.de/agas/projects/IntegVelodyne/30_prog/external/imageGrabber/lib imageGrabber
-cd imageGrabber
-qmake
-make -j$GCC_THREADS
-cd ..
+
+#svn co https://svn.uni-koblenz.de/agas/projects/IntegVelodyne/30_prog/external/imageGrabber/lib imageGrabber
+#cd imageGrabber
+#qmake
+#make -j$GCC_THREADS
+#cd ..
 
 svn co https://svn.uni-koblenz.de/agas/projects/IntegVelodyne/30_prog/external/imageOperations/lib imageOperations
 cd imageOperations

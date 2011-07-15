@@ -3,11 +3,13 @@
 # baseLibApp Build
 # Lubosz Sarnecki 2011
 
-EXTENSION_LIST="jpg png"
+#EXTENSION_LIST="jpg png"
+EXTENSION_LIST="jpg"
 
 cd images/
+rm *.txt
 IMAGE_PATH=$PWD
-TEMP_LIST="$IMAGE_PATH/temp.list"
+TEMP_LIST="$IMAGE_PATH/temp.txt"
 DIR_LIST=`find . -type d`
 
 for IMAGEDIR in $DIR_LIST; do
@@ -18,7 +20,7 @@ for IMAGEDIR in $DIR_LIST; do
       if ((${#IMAGE_LIST} != 0)); then
         LIST_NAME=`echo $IMAGEDIR | cut -c 3-`
         echo "Found Images in $LIST_NAME"
-        LIST_PATH="$IMAGE_PATH/$LIST_NAME-$EXT.list"
+        LIST_PATH="$IMAGE_PATH/$LIST_NAME-$EXT.txt"
         #echo $LIST_PATH
         touch $TEMP_LIST
         for IMAGE in $IMAGE_LIST; do
